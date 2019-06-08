@@ -1,0 +1,136 @@
+<h4>Formularios <small>template</small></h4>
+<hr>
+<form (ngSubmit)="save(forma)" #forma="ngForm" novalidate>
+
+    <div class="form-group row"
+         [ngClass]="{ 'has-danger': (nombre.errors?.required || nombre.errors?.minlength)
+              && nombre.touched }">
+      <label class="col-2 col-form-label">Nombre</label>
+      <div class="col-8">
+
+        <input class="form-control"
+               type="text"
+               name="nombre"
+               placeholder="Nombre"
+               [(ngModel)]="user.nombre"
+               minlength="3"
+               required
+               #nombre="ngModel">
+
+        <div *ngIf="nombre.errors?.required" class="form-control-feedback">
+          This field is required.
+        </div>
+        <div *ngIf="nombre.errors?.minlength" class="form-control-feedback">
+          This field need at least {{ nombre.errors.minlength.requiredLength }} characters.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row"[ngClass]="{ 'has-danger': (apellido.errors?.required || apellido.errors?.minlength)
+         && nombre.touched }">
+      <label class="col-2 col-form-label">Apellido</label>
+      <div class="col-8">
+
+        <input class="form-control"
+               type="text"
+               placeholder="Apellido"
+               name="apellido"
+               [(ngModel)]="user.apellido"
+               minlength="3"
+               required
+               #apellido = "ngModel">
+        <div *ngIf="apellido.errors?.required" class="form-control-feedback">
+          This field is required.
+        </div>
+        <div *ngIf="apellido.errors?.minlength" class="form-control-feedback">
+          This field need at least {{ apellido.errors.minlength.requiredLength }} characters.
+        </div>
+      </div>
+
+    </div>
+
+  <div class="form-group row"[ngClass]="{ 'has-danger': (email.errors?.required || email.errors?.minlength)
+       && nombre.touched }">
+    <label class="col-2 col-form-label">Correo</label>
+    <div class="col-md-8">
+      <input class="form-control"
+             type="email"
+             placeholder="Correo electrónico"
+             name="email"
+             [(ngModel)]="user.email"
+             required
+             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+             #email="ngModel">
+      <div *ngIf="email.errors?.required" class="form-control-feedback">
+        This field is required.
+      </div>
+      <div *ngIf="email.errors?.pattern" class="form-control-feedback">
+        The structure of the email is not valid, please write something like: "yourname@domain.ext".
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">País</label>
+    <div class="col-md-8">
+      <select [(ngModel)]="user.country"
+              class="form-control" name="country">
+        <option value="">Select your country...</option>
+        <option *ngFor="let country of countries"
+                [value]="country.code">{{ country.name }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Sexo</label>
+    <div class="col-md-8">
+      <label *ngFor="let gen of genders" class="custom-control custom-radio">
+        <input  [(ngModel)]="user.gender"
+                type="radio" name="gender" [value]="gen"
+                class="custom-control-input">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">{{ gen }}</span>
+      </label>
+      <!-- div class="custom-control custom-radio custom-control-inline">
+        <input [(ngModel)]="user.gender"
+                value="Mujer"
+               type="radio" id="customRadioInline1" name="sexo" class="custom-control-input">
+        <label class="custom-control-label" for="customRadioInline1">Mujer</label>
+      </div-->
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Accept terms</label>
+    <div class="col-md-8">
+      <label class="custom-control custom-checkbox">
+        <input
+            [(ngModel)]="user.terms"
+            name="terms"
+            type="checkbox"
+            class="custom-control-input"
+            required>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">I've read and accept the terms and conditions of this form.</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">&nbsp;</label>
+    <div class="input-group col-md-8">
+      <!--  -->
+      <button
+        [disabled]="!forma.valid"
+        type="submit"
+        class="btn btn-outline-primary">
+        Guardar
+      </button>
+    </div>
+  </div>
+</form>
+
+<pre>
+  {{ user | json }}
+</pre>
